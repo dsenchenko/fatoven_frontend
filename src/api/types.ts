@@ -94,3 +94,17 @@ export interface WeeklyAssessmentInput {
   stressScore?: number;
   notes?: string;
 }
+
+export type SpreadsheetImportMode = 'merge' | 'replace';
+
+export interface SpreadsheetImportResult {
+  mode: SpreadsheetImportMode;
+  imported: {
+    dailyLogs: number;
+    weeklyAssessments: number;
+  };
+  dateRange: {
+    from: string | null;
+    to: string | null;
+  };
+}

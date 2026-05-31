@@ -1,9 +1,11 @@
-import { apiRequest } from './client';
+import { apiBlobRequest, apiFormRequest, apiRequest } from './client';
 import type {
   AuthResponse,
   DailyLog,
   DailyLogInput,
   PublicStatsProfile,
+  SpreadsheetImportMode,
+  SpreadsheetImportResult,
   User,
   WeeklyAssessment,
   WeeklyAssessmentInput,
@@ -136,5 +138,25 @@ export async function getWeeklyAssessment(
 ): Promise<{ assessment: WeeklyAssessment }> {
   return apiRequest<{ assessment: WeeklyAssessment }>(
     `/api/v1/tracking/weekly/assessments/${weekStartDate}`,
+  );
+}
+
+export async function exportTrackingSpreadsheet(from?: string, to?: string): Promise<Blob> {
+  const params = new URLSearchParams();
+  if (from) params.set('from', from);
+  if (to) params.set('to', to);
+  const query = params.toString();
+  return apiBlobRequest(`/api/v1/tracking/export${query ? `?${query}` : ''}`);
+}
+
+export async function importTrackingSpreadsheet(
+  file: File,
+  mode: SpreadsheetImportMode = 'merge',
+): Promise<SpreadsheetImportResult> {
+  const formData = new FormData();
+  formData.append('file', file);
+  return apiFormRequest<SpreadsheetImportResult>(
+    `/api/v1/tracking/import?mode=${mode}`,
+    formData,
   );
 }
