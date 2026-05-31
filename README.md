@@ -25,10 +25,17 @@ Open [http://localhost:5173](http://localhost:5173).
 
 Copy `.env.production.example` to `.env.production` before production build.
 
-## Production deploy
+## Production deploy (PM2)
 
-**Backend:** Docker — see `../fatoven_backend/DEPLOY.md`  
-**Frontend:** PM2 — see [`../DEPLOY.md`](../DEPLOY.md)
+Files are in this repo: `ecosystem.config.cjs`, `deploy.sh`, `DEPLOY.md`.
+
+```bash
+cp .env.production.example .env.production
+# edit VITE_API_BASE_URL=http://YOUR_SERVER_IP:3000
+chmod +x deploy.sh && ./deploy.sh
+```
+
+Backend API: Docker in `fatoven_backend` (`docker compose -f docker-compose.prod.yml up -d --build`).
 
 ## Scripts
 
