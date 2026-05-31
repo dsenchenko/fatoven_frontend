@@ -108,14 +108,6 @@ export async function getDailyLogs(
   );
 }
 
-export async function getDailyLog(date: string): Promise<{ log: DailyLog }> {
-  return apiRequest<{ log: DailyLog }>(`/api/v1/tracking/daily/${date}`);
-}
-
-export async function deleteDailyLog(date: string): Promise<void> {
-  return apiRequest<void>(`/api/v1/tracking/daily/${date}`, { method: 'DELETE' });
-}
-
 export async function getWeeklySummaries(
   from: string,
   to: string,
@@ -145,8 +137,4 @@ export async function getWeeklyAssessment(
   return apiRequest<{ assessment: WeeklyAssessment }>(
     `/api/v1/tracking/weekly/assessments/${weekStartDate}`,
   );
-}
-
-export async function checkHealth(): Promise<{ status: string; service: string }> {
-  return apiRequest<{ status: string; service: string }>('/health', { auth: false });
 }

@@ -65,7 +65,3 @@ export async function apiRequest<T>(
 
   return data as T;
 }
-
-export function getApiBaseUrl(): string {
-  return BASE_URL;
-}

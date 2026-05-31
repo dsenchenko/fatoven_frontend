@@ -7,13 +7,6 @@ Personal health-tracking web app for Fatoven. Connects to the Fatoven REST API f
 - Node.js 18+
 - [Fatoven API](http://localhost:3001) running locally
 
-Verify the backend:
-
-```bash
-curl http://localhost:3001/health
-# {"status":"ok","service":"fatoven-api"}
-```
-
 ## Setup
 
 ```bash
@@ -30,6 +23,13 @@ Open [http://localhost:5173](http://localhost:5173).
 |----------|-------------|
 | `VITE_API_BASE_URL` | API base URL (default: `http://localhost:3001`) |
 
+Copy `.env.production.example` to `.env.production` before production build.
+
+## Production deploy
+
+**Backend:** Docker — see `../fatoven_backend/DEPLOY.md`  
+**Frontend:** PM2 — see [`../DEPLOY.md`](../DEPLOY.md)
+
 ## Scripts
 
 | Command | Description |
@@ -38,35 +38,27 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
 
-## Features (MVP)
+## Features
 
-- **Auth** — Register, login, JWT stored in `localStorage`, auto-redirect on 401
-- **Dashboard** — Today's date, quick stats, recent trend charts
-- **Progress** — Full charts: weight, steps, calories, macros, weekly scores & measurements
-- **Daily Log** — Upsert weight, steps, calories, macros, Garmin burn
-- **History** — Spreadsheet-style table grouped by ISO week with weekly averages and trend charts
-- **Weekly Check-in** — Body measurements and 1–10 subjective scores
-- **Profile** — Account info and logout
+- **Auth** — Register, login, JWT in `localStorage`
+- **Daily log** — Spreadsheet-style table with inline editing, filters, charts, weekly check-ins
+- **Shared stats** — `/{username}/stats` read-only page for collaborators (login required)
+- **Profile** — Account settings, username, share link
 
 ## Project structure
 
 ```
 src/
-  api/           # HTTP client, types, auth token helper
-  features/      # auth, daily-log, history, weekly
-  components/    # shared UI and layout
-  hooks/         # auth context
-  pages/         # route entry points
-  lib/           # date helpers, utilities
+  api/              # HTTP client, types, endpoints
+  features/         # auth, history, profile, progress, weekly
+  components/       # shared UI, layout, charts
+  hooks/            # auth and chart preferences
+  lib/              # dates, chart data, utilities
 ```
-
-## Future features (placeholders)
-
-Routes exist but are not implemented: `/food`, `/garmin`, `/coach`.
 
 ## Test flow
 
-1. Register a new account at `/register`
-2. Log in and open **Daily Log** — save today's metrics
-3. Open **History** — confirm logs appear with weekly averages
-4. Open **Weekly Check-in** — save measurements and scores
+1. Register at `/register` and log in
+2. Edit cells on the daily log, use filters and charts
+3. Set a username on **Profile** and open `/{username}/stats`
+4. Add a weekly check-in from a week header button
